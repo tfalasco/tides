@@ -1,23 +1,21 @@
 # #############################################
-# tideFetcher.py
+# tides.py
 #
 # Author: Ted Falasco
 # Date created: 8/18/2020
 #
 # #############################################
 
-import turtle
 from datetime import datetime, timedelta
 
-import tidePlotter
+from tidePlotter import TurtlePlotter
 import tideFetcher
 
 def main():
     print("Tides")
 
-    # Create a turtle for plotting
-    t = turtle.Turtle()
-    t.hideturtle()
+    # Create a TurtlePlotter
+    t = TurtlePlotter()
 
     # Grab the current datetime in UTC and find yesterday's date
     now = datetime.utcnow()
@@ -27,7 +25,7 @@ def main():
     tides = tideFetcher.getTides(yesterday.strftime("%Y%m%d"), "8661070")
 
     # Plot the axes
-    tidePlotter.plotAxes(t)
+    t.plotAxes()
 
     # Plot the tides
     # Each tide segment should be scaled in the x-axis for time and in
@@ -48,14 +46,11 @@ def main():
             xOffset = (((startTideDateTime - now).days * 86400) + ((startTideDateTime - now).seconds)) // 60
 
             # Plot the current tide segment
-            tidePlotter.plotTideSegment(t, startTide, endTide, tideMinutes, xOffset)            
+            t.plotTideSegment(startTide, endTide, tideMinutes, xOffset)            
 
     # Plot a line indicating the current datetime
     xOffset = (now.hour * 60) + now.minute
-    tidePlotter.plotNowLine(t, xOffset)
-
-    turtle.done()
-
+    t.plotNowLine(xOffset)
 
 if __name__ == '__main__':
     main()

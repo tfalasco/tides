@@ -9,90 +9,100 @@
 import turtle
 import math
 
-# Adjust this value to change how "wide" the tides plot is
-# This is used to plot both the tides and the now-line
-xScaleFactor = 7.5
+class TurtlePlotter:
+    def __init__(self):
+        # Instantiate a turtle for plotting and hide the turtle
+        self.theTurtle = turtle.Turtle()
+        self.theTurtle.hideturtle()
 
-# Adjust this value to change how "tall" the tides plot is
-# This is used to plot both the tides and the y-axis ticks
-yScale = 50
+        # Adjust this value to change how "wide" the tides plot is
+        # This is used to plot both the tides and the now-line
+        self.xScaleFactor = 7.5
 
-# Adjust this value to change the choppiness/smoothness of
-# the plotted tide curve.
-# This is used to plot both the tides and the now-line
-curvePrecision = 20
+        # Adjust this value to change how "tall" the tides plot is
+        # This is used to plot both the tides and the y-axis ticks
+        self.yScale = 50
 
-# Plots the tide segment
-# Does a cosine interpolation between startTide and endTide to smooth the curve
-# Scales the y-axis based on the number of minutes between  startTide and endTide
-def plotTideSegment(theTurtle, startTide, endTide, segmentMinutes, xOffset):
+        # Adjust this value to change the choppiness/smoothness of
+        # the plotted tide curve.
+        # This is used to plot both the tides and the now-line
+        self.curvePrecision = 20
 
-    # Calculate the scale and offset for the x-axis
-    xScale = segmentMinutes / xScaleFactor
-    xOffset = (xOffset * math.pi) / xScaleFactor
+    def __del__(self):
+        # Keep the screen open
+        turtle.done()
 
-    # The curved cosine interpolation line is composed of a number of straight lines
-    # The choppiness/smoothness of the end result is dependent on curvePrecision
-    for line in range (curvePrecision + 1):
-        
-        # Do the cosine interpolation for the y-axis value
-        x = line * (math.pi / curvePrecision)
-        y = ((math.cos(x) * ((startTide - endTide) / 2)) + ((startTide + endTide) / 2))
+    # Plots the tide segment
+    # Does a cosine interpolation between startTide and endTide to smooth the curve
+    # Scales the y-axis based on the number of minutes between  startTide and endTide
+    def plotTideSegment(self, startTide, endTide, segmentMinutes, xOffset):
 
-        # Scale and offset the x-axis and y-axis values
-        x = (x * xScale) + xOffset
-        y = y * yScale
+        # Calculate the scale and offset for the x-axis
+        xScale = segmentMinutes / self.xScaleFactor
+        xOffset = (xOffset * math.pi) / self.xScaleFactor
 
-        # Move to the starting point without drawing a line
-        # Only draw a line if within the range of the plotted area
-        if line == 0:
-            theTurtle.penup()
-        elif (x > -400) and (x < 400):
-            theTurtle.pensize(5)
-            theTurtle.pencolor("Blue")
-            theTurtle.pendown()
-        else:
-            theTurtle.penup()
+        # The curved cosine interpolation line is composed of a number of straight lines
+        # The choppiness/smoothness of the end result is dependent on curvePrecision
+        for line in range (self.curvePrecision + 1):
+            
+            # Do the cosine interpolation for the y-axis value
+            x = line * (math.pi / self.curvePrecision)
+            y = ((math.cos(x) * ((startTide - endTide) / 2)) + ((startTide + endTide) / 2))
 
-        # Plot the line
-        theTurtle.goto(x, y)
+            # Scale and offset the x-axis and y-axis values
+            x = (x * xScale) + xOffset
+            y = y * self.yScale
 
-# Plots the x- and y-axes
-def plotAxes(theTurtle):
+            # Move to the starting point without drawing a line
+            # Only draw a line if within the range of the plotted area
+            if line == 0:
+                self.theTurtle.penup()
+            elif (x > -400) and (x < 400):
+                self.theTurtle.pensize(5)
+                self.theTurtle.pencolor("Blue")
+                self.theTurtle.pendown()
+            else:
+                self.theTurtle.penup()
 
-    # Plot the main axes
-    theTurtle.penup()
-    theTurtle.goto(-400, 350)
+            # Plot the line
+            self.theTurtle.goto(x, y)
 
-    theTurtle.pensize(3)
-    theTurtle.pencolor("Black")
-    theTurtle.pendown()
-    theTurtle.goto(-400, -350)
-    theTurtle.goto(-400, 0)
-    theTurtle.goto(400, 0)
+    # Plots the x- and y-axes
+    def plotAxes(self):
 
-    # Plot the y-axis tick marks
-    theTurtle.pensize(1)
-    theTurtle.pencolor("Grey")
+        # Plot the main axes
+        self.theTurtle.penup()
+        self.theTurtle.goto(-400, 350)
 
-    for y in range(-350, 351, yScale):
-        if y != 0:
-            theTurtle.penup()
-            theTurtle.goto(-400, y)
+        self.theTurtle.pensize(3)
+        self.theTurtle.pencolor("Black")
+        self.theTurtle.pendown()
+        self.theTurtle.goto(-400, -350)
+        self.theTurtle.goto(-400, 0)
+        self.theTurtle.goto(400, 0)
 
-            theTurtle.pendown()
-            theTurtle.goto(400, y)
+        # Plot the y-axis tick marks
+        self.theTurtle.pensize(1)
+        self.theTurtle.pencolor("Grey")
 
-# Plots a line indicating the current datetime
-def plotNowLine(theTurtle, xOffset):
+        for y in range(-350, 351, self.yScale):
+            if y != 0:
+                self.theTurtle.penup()
+                self.theTurtle.goto(-400, y)
 
-    xOffset = ((xOffset * math.pi) / xScaleFactor) / curvePrecision
+                self.theTurtle.pendown()
+                self.theTurtle.goto(400, y)
 
-    theTurtle.penup()
-    theTurtle.goto(0, -350)
+    # Plots a line indicating the current datetime
+    def plotNowLine(self, xOffset):
 
-    theTurtle.pensize(3)
-    theTurtle.pencolor("Red")
+        xOffset = ((xOffset * math.pi) / self.xScaleFactor) / self.curvePrecision
 
-    theTurtle.pendown()
-    theTurtle.goto(0, 350)
+        self.theTurtle.penup()
+        self.theTurtle.goto(0, -350)
+
+        self.theTurtle.pensize(3)
+        self.theTurtle.pencolor("Red")
+
+        self.theTurtle.pendown()
+        self.theTurtle.goto(0, 350)
