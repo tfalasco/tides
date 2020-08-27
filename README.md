@@ -7,7 +7,7 @@ This project aims to display the current tide conditions, along with some recent
 
 ## Project Goals
 ### Graphics
-One goal of this project is to learn about graphics in Python.  The first pass uses Turtle for the graphics and improving the graphical performance is left for a future enhancement.
+One goal of this project is to learn about graphics in Python.  The first pass used Turtle for the graphics and improving the graphical performance was left for a future enhancement.  The current iteration now uses matplotlib to plot the tides and the performance improved drastically over using Turtle.
 
 ### API Access
 Another goal of this project is to work with the NOAA CO-OPS API to request and deal with tide data.  Proper API usage is an important part of integrating with external systems and this project presents an opportunity to practice just that.
