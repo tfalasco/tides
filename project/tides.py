@@ -58,7 +58,7 @@ def main():
     m.calculateNowLine(local_now)
     
     # Show the plot
-    m.displayPlot()
+    m.displayPlot(local_now)
 
 if __name__ == '__main__':
     main()

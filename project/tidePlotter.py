@@ -12,6 +12,7 @@ from matplotlib.ticker import AutoMinorLocator
 import numpy
 import turtle
 import math
+from datetime import datetime, timedelta
 from dateutil import tz
 
 class MatPlotPlotter:
@@ -84,16 +85,26 @@ class MatPlotPlotter:
         self.now_y_values.append(max_y)
 
 
-    def displayPlot(self):
+    def displayPlot(self, now_datetime):
+        # Adjust timezone info to prevent auto-correcting local time to UTC
+        now_datetime = now_datetime.replace(tzinfo=tz.tzutc())        
+
+        # Limit x-axis to +/- 12 hours from now
+        x_min = now_datetime - timedelta(hours = 11, minutes = now_datetime.minute)
+        x_max = now_datetime + timedelta(hours = 12, minutes = 60 - now_datetime.minute)
+        self.ax.set_xlim(x_min, x_max)
+
         # Plot the x and y values           
         self.ax.plot_date(self.all_x_values, self.all_y_values, 'b-', 'America/New York')
         self.ax.plot_date(self.now_x_values, self.now_y_values, 'r-', 'America/New York')
 
         # Configure gridlines
+        xticks = numpy.arange(x_min, x_max, (x_max - x_min) / 4)
+        self.ax.set_xticks(xticks)
         plt.grid(b = True, which = 'major', axis = 'both', color='grey')
         plt.minorticks_on()
         self.ax.yaxis.set_minor_locator(AutoMinorLocator(4))
-        self.ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+        self.ax.xaxis.set_minor_locator(AutoMinorLocator(6))
         plt.grid(b = True, which = 'minor', axis = 'both', color='lightsteelblue')
         
         # Configure axis labels        
