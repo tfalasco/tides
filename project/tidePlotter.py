@@ -36,8 +36,7 @@ class MatPlotPlotter:
         self.now_x_values = []
 
         # Create an empty list for the now y values
-        self.now_y_values = []
-    
+        self.now_y_values = []    
 
     # Calculates the x and y values of the tide segment
     # Does a cosine interpolation between startTide and endTide to smooth the curve
@@ -83,7 +82,6 @@ class MatPlotPlotter:
 
         self.now_x_values.append(now_datetime)
         self.now_y_values.append(max_y)
-
 
     def displayPlot(self, now_datetime):
         # Adjust timezone info to prevent auto-correcting local time to UTC

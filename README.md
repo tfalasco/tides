@@ -14,3 +14,10 @@ Another goal of this project is to work with the NOAA CO-OPS API to request and 
 
 ### Smoothing Algorithms
 Lastly, this project was born from me wondering how to create a smooth-line transition between data points such as high and low tide.  Research into that topic revealed a fairly easy-to-implement smoothing algorithm called cosine interpolation, which works particularly well for alternating high/low data points, such as tide heights.
+
+## Environment
+### Python Version
+This application was written using Python 3.8.5
+
+### Dependencies
+This application depends on numpy and matplotlib
