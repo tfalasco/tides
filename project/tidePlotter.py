@@ -6,9 +6,13 @@
 #
 # #############################################
 
+import tkinter
+import matplotlib
 import matplotlib.pyplot as plt 
 import matplotlib.dates as mdates
 from matplotlib.ticker import AutoMinorLocator
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+# from matplotlib.figure import Figure
 import numpy
 import turtle
 import math
@@ -83,7 +87,10 @@ class MatPlotPlotter:
         self.now_x_values.append(now_datetime)
         self.now_y_values.append(max_y)
 
-    def displayPlot(self, now_datetime):
+    # Embeds the plot into the parent_widget passed as an argument
+    def displayPlot(self, parent_widget, now_datetime):
+        matplotlib.use("TkAgg")
+
         # Adjust timezone info to prevent auto-correcting local time to UTC
         now_datetime = now_datetime.replace(tzinfo=tz.tzutc())        
 
@@ -113,8 +120,10 @@ class MatPlotPlotter:
         self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%H')) 
         self.ax.xaxis.set_minor_formatter(mdates.DateFormatter('%H'))
 
-        # Show the axes
-        plt.show()
+        # Embed the figure
+        canvas = FigureCanvasTkAgg(self.fig, master = parent_widget)
+        canvas.draw()
+        canvas.get_tk_widget().grid(row = 0, column = 0)
 
 class TurtlePlotter:
     def __init__(self):
